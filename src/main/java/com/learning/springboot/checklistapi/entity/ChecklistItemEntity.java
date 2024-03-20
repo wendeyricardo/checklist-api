@@ -2,18 +2,23 @@ package com.learning.springboot.checklistapi.entity;
 
 import java.time.LocalTime;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
+@Entity(name="ChecklistItem")
+@Table(indexes = {@Index(name= "IDX_GUID_CK_IT", columnList="guid")})
 public class ChecklistItemEntity extends BaseEntity{
 
-    private Long checklistItem;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long checklistItemId;
 
     private String description;
 
@@ -23,6 +28,7 @@ public class ChecklistItemEntity extends BaseEntity{
     
     private LocalTime postDate;
 
+    @ManyToOne
     private CategoryEntity category;
     
 }

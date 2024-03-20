@@ -1,14 +1,10 @@
 package com.learning.springboot.checklistapi.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javax.persistence.MappedSuperclass;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
+@MappedSuperclass
 public class BaseEntity {
 
     private String guid;
