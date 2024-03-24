@@ -13,4 +13,6 @@ public interface ChecklistItemRepository extends PagingAndSortingRepository<Chec
 
     List<ChecklistItemEntity> findByDescriptionAndIsCompleted(String description, Boolean isCompleted);
 
+    List<ChecklistItemEntity> findByCategoryGuid(String guid);
+
 }
