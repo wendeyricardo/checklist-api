@@ -1,6 +1,6 @@
 package com.learning.springboot.checklistapi.entity;
 
-import java.time.LocalTime;
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,9 +24,9 @@ public class ChecklistItemEntity extends BaseEntity{
 
     private Boolean isCompleted;
 
-    private LocalTime deadline;
+    private LocalDate deadline;
     
-    private LocalTime postDate;
+    private LocalDate postDate;
 
     @ManyToOne
     private CategoryEntity category;
