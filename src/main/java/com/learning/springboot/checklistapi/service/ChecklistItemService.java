@@ -46,6 +46,39 @@ public class ChecklistItemService {
         }
     }
 
+    public ChecklistItemEntity updateChecklistItem(String guid, String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
+        
+        if(StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be null or empty");
+        }
+
+        ChecklistItemEntity retrievedItem = this.checklistItemRepository.findByGuid(guid)
+                .orElseThrow(() -> new ResourceNotFoundException("checklist item not found"));
+        
+        if(StringUtils.hasText(description)){
+            retrievedItem.setDescription(description);
+        }
+        
+        if(isCompleted != null){
+            retrievedItem.setIsCompleted(isCompleted);
+        }
+
+        if(deadline != null){
+            retrievedItem.setDeadline(deadline);
+        }
+
+        if(StringUtils.hasText(categoryGuid)){
+            CategoryEntity retrievedCategory = this.categoryRepository.findByGuid(categoryGuid)
+                .orElseThrow(()-> new ResourceNotFoundException("category not found"));
+            retrievedItem.setCategory(retrievedCategory);
+        }
+
+        log.debug("updating checklist item [checklistItem = {}]", retrievedItem.toString());
+
+        return this.checklistItemRepository.save(retrievedItem);
+
+    }
+
     public ChecklistItemEntity addNewChecklistItemEntity(String description, Boolean isCompleted, LocalDate deadline, String categoryGuid){
 
         this.validateChecklistItemData(description, isCompleted, deadline, categoryGuid);
@@ -65,6 +98,15 @@ public class ChecklistItemService {
         return checklistItemRepository.save(checklistItemEntity);
     }
 
+    public ChecklistItemEntity findChecklistItemByGuid(String guid){
+        if(!StringUtils.hasText(guid)){
+            throw new IllegalArgumentException("Guid cannot be empoty or null");
+        }
+        return this.checklistItemRepository.findByGuid(guid).orElseThrow(
+            () -> new ResourceNotFoundException("checklistItem not found")
+        );
+    }
+
     public Iterable<ChecklistItemEntity> findAllChecklistItems(){
         return this.checklistItemRepository.findAll();
     }
@@ -73,6 +115,7 @@ public class ChecklistItemService {
         if(StringUtils.hasText(guid)){
             throw new IllegalArgumentException("guig canot be null or empty");
         }
+        
         ChecklistItemEntity retrievedITem = this.checklistItemRepository.findByGuid(guid)
                 .orElseThrow(() -> new ResourceNotFoundException("check item not found"));
         
