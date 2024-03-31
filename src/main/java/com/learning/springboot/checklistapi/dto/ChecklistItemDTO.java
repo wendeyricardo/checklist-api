@@ -2,8 +2,6 @@ package com.learning.springboot.checklistapi.dto;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.Check;
-
 import com.learning.springboot.checklistapi.entity.ChecklistItemEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,19 +15,22 @@ public class ChecklistItemDTO {
     private Boolean isCompleted;
     private LocalDate deadline;
     private LocalDate postDate;
-    private String categoryGuid;
+    private CategoryDTO category;
 
     public static ChecklistItemDTO toDTO(ChecklistItemEntity checklistItemEntity) {
-
-    return ChecklistItemDTO.builder()
-        .guid(checklistItemEntity.getGuid())
-        .description(checklistItemEntity.getDescription())
-        .deadline(checklistItemEntity.getDeadline())
-        .postDate(checklistItemEntity.getPostDate())
-        .isCompleted(checklistItemEntity.getIsCompleted())
-        .categoryGuid(checklistItemEntity.getCategory().getGuid())
-        .build();
-
+        return ChecklistItemDTO.builder()
+                .guid(checklistItemEntity.getGuid())
+                .description(checklistItemEntity.getDescription())
+                .deadline(checklistItemEntity.getDeadline())
+                .postDate(checklistItemEntity.getPostDate())
+                .isCompleted(checklistItemEntity.getIsCompleted())
+                .category(checklistItemEntity.getCategory() != null ?
+                        CategoryDTO.builder()
+                                .guid(checklistItemEntity.getCategory().getGuid())
+                                .name(checklistItemEntity.getCategory().getName())
+                        .build() :
+                        null)
+                .build();
     }
-    
-}
+} 
+

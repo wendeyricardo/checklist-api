@@ -10,13 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.learning.springboot.checklistapi.dto.CategoryDTO;
 import com.learning.springboot.checklistapi.dto.ChecklistItemDTO;
 import com.learning.springboot.checklistapi.entity.ChecklistItemEntity;
 import com.learning.springboot.checklistapi.service.ChecklistItemService;
@@ -53,8 +56,7 @@ public class ChecklistItemController {
         ChecklistItemEntity newChecklistItem = this.checklistItemService.addNewChecklistItemEntity(
             checklistItemDTO.getDescription(), checklistItemDTO.getIsCompleted(),
             checklistItemDTO.getDeadline(),
-            checklistItemDTO.getCategory().getGuid()
-        );
+            checklistItemDTO.getCategory().getGuid());
 
         return new ResponseEntity<>(newChecklistItem.getGuid(), HttpStatus.CREATED);
 
@@ -69,9 +71,17 @@ public class ChecklistItemController {
         this.checklistItemService.updateChecklistItem(
             checklistItemDTO.getIsCompleted(),
             checklistItemDTO.getDeadline(),
-            checklistItemDTO.getCategory().getGuid());
+            checklistItemDTO.getCategory() != null ? checklistItemDTO.getCategory().getGuid() : null) ;
+            
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
+    @DeleteMapping(value="{guid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteChecklistItem(@PathVariable String guid){
+        this.checklistItemService.deleteChecklistItem(guid);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     
 }
