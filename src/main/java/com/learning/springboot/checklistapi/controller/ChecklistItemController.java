@@ -56,7 +56,7 @@ public class ChecklistItemController {
         ChecklistItemEntity newChecklistItem = this.checklistItemService.addNewChecklistItemEntity(
             checklistItemDTO.getDescription(), checklistItemDTO.getIsCompleted(),
             checklistItemDTO.getDeadline(),
-            checklistItemDTO.getCategory().getGuid());
+            checklistItemDTO.getCategoryGuid());
 
         return new ResponseEntity<>(newChecklistItem.getGuid(), HttpStatus.CREATED);
 
@@ -66,12 +66,11 @@ public class ChecklistItemController {
     public ResponseEntity<Void> updateChecklistItem(@RequestBody ChecklistItemDTO checklistItemDTO){
         
         if(StringUtils.hasLength(checklistItemDTO.getGuid())){
-            throw new ValidationException("Checklist item guid is mandatory");
+            throw new ValidationException("Checklist item guid cannot be null or  empty");
         }
-        this.checklistItemService.updateChecklistItem(
-            checklistItemDTO.getIsCompleted(),
-            checklistItemDTO.getDeadline(),
-            checklistItemDTO.getCategory() != null ? checklistItemDTO.getCategory().getGuid() : null) ;
+        this.checklistItemService.updateChecklistItem(checklistItemDTO.getGuid(),
+            checklistItemDTO.getDescription(), checklistItemDTO.getIsCompleted(),
+            checklistItemDTO.getDeadline(), checklistItemDTO.getCategoryGuid()) ;
             
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
