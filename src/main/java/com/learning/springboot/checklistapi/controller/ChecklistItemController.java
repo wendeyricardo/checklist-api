@@ -24,8 +24,12 @@ import com.learning.springboot.checklistapi.dto.ChecklistItemDTO;
 import com.learning.springboot.checklistapi.entity.ChecklistItemEntity;
 import com.learning.springboot.checklistapi.service.ChecklistItemService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @RestController
-@RequestMapping("/api/v1/checklist-items")
+@RequestMapping("/v1/api/checklist-items")
 public class ChecklistItemController {
 
     private ChecklistItemService checklistItemService;
@@ -34,6 +38,10 @@ public class ChecklistItemController {
         this.checklistItemService = checklistItemService;
     }
 
+    @Operation(description = "Retrieves all checklist items")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found all checklist items")
+    })
     @GetMapping(value="", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ChecklistItemDTO>> getAllChecklistItems(){
      
