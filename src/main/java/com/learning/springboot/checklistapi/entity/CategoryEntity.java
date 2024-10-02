@@ -1,6 +1,7 @@
 package com.learning.springboot.checklistapi.entity;
 
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,11 +12,12 @@ import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
+import java.util.List;
 
-@Data
-@Entity(name = "Category")
-@Table(indexes = {@Index(name= "IDX_GUID_CAT", columnList="guid")})
+@Getter
+@Setter
+@Entity(name="Category")
+@Table(indexes = { @Index(name = "IDX_GUID_CAT", columnList = "guid")})
 public class CategoryEntity extends BaseEntity{
 
     @Id
@@ -27,5 +29,4 @@ public class CategoryEntity extends BaseEntity{
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<ChecklistItemEntity> checklistItems;
-    
 }
